@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="file" class="file" name="avatar">
+    <img></img>
+    <button onclick="send()">上传</button>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let formData = new FormData()
+        document.querySelector('.file').addEventListener('change', function (e) {
+            let files = e.target.files
+            console.log(files)
+            if (!files.length) return
+            formData.append('file', files[0], files[0].name)
+        })
+        function send() {
+            axios.post('/upload', formData, {
+                Headers: {
+                    "Content-type": "multipart/form-data",
+                }
+            }).then(res => {
+                console.log(res.data.data);
+                const img = document.querySelector('img');
+                img.src=res.data.data;
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "koa-server",
+  "version": "1.0.0",
+  "description": "1.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --inspect ./app.js",
+    "dev": "node ./app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/multer": "^3.0.0",
+    "consola": "^2.15.3",
+    "koa": "^2.13.4",
+    "koa-body": "^5.0.0",
+    "koa-router": "^11.0.0",
+    "koa-static": "^5.0.0",
+    "koa2-cors": "^2.0.6",
+    "multer": "^1.4.5-lts.1"
+  }
+}
