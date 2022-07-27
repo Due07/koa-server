@@ -29,7 +29,7 @@ async function start() {
     .use(router.allowedMethods()) // allowedMethods()中间件主要用于处理options请求，响应405和501状态。 
     .use(koaCors()); // 解决跨域
 
-    app.listen(3000, () => {
+    app.listen(3000, '127.0.0.1', () => {
         consola.ready({
             message: `Server listening on 3000`,
             badge: true
