@@ -4,7 +4,8 @@
   "description": "1.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --inspect ./app.js",
+    "test-port": "node --inspect-port=9009 ./app.js",
+    "test": "nodemon --inspect ./app.js",
     "dev": "node ./app.js"
   },
   "author": "",
@@ -14,9 +15,12 @@
     "consola": "^2.15.3",
     "koa": "^2.13.4",
     "koa-body": "^5.0.0",
+    "koa-bodyparser": "^4.3.0",
     "koa-router": "^11.0.0",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.19",
+    "xlsx": "^0.18.5"
   }
 }

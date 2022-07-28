@@ -5,6 +5,8 @@ const useStatic = require('./upload/uploadRequest');
 
 const uploadRespone = require('./upload/uploadRespone');
 
+const analysisExecl = require('./uploadExecl/analysisExecl');
+
 const path = require('path');
 const fs = require('fs');
 
@@ -14,7 +16,9 @@ router
     const templatePage = fs.readFileSync(path.resolve('./page/index.html'), 'utf-8');
     // 读取这个路径下的系统信息，用isDirectory判断是否为文件
     const template = fs.lstatSync(path.resolve('./page'));
-    console.log(template, template.isDirectory());
+
+    // console.log(template, template.isDirectory());
+
     ctx.body = templatePage;
 })
 .get('/api/', (ctx, next) => {
@@ -39,7 +43,7 @@ router
 // /^\/upload\/+[A-Za-z0-9\/]+([A-Za-z0-9]{2,64})+(.png|.jpeg|.jpg)$/i
 // 👆 以/upload/开头 + 中间可以多层路径(或者没有) + (2-64位)((.png)|(.jpeg)|(.jpg))结尾的的路由
 // 匹配 /upload/{2-64位名称}(.png/.jpeg/.jpg)
-.get(/^\/upload+\/+([A-Za-z0-9]{2,64})((.png)|(.jpeg)|(.jpg))$/i, useStatic)
+.get(/^\/upload+\/+([A-Za-z0-9]{2,64})((.png)|(.jpeg)|(.jpg)|(.xlsx)|(.xls))$/i, useStatic)
 .post(
     '/upload',
     async (ctx, next) => {
@@ -68,6 +72,21 @@ router
             };
         }
     }
+)
+.post(
+    '/upload/execl',
+    async (ctx) => {
+        console.log(ctx, ctx.request.files);
+        if (!ctx.request.files) {
+            return ctx.body = {
+                code: 400,
+                message: '请上传execl文件',
+                status: 'error',
+            };
+        };
+        const body  = await analysisExecl(ctx.request.files.file);
+        ctx.body = body;
+    },
 )
 .all('/api/users/:id', (ctx, next) => {
     ctx.body = {

@@ -9,20 +9,43 @@
 </head>
 
 <body>
-    <input type="file" class="file" name="avatar">
-    <img></img>
-    <button onclick="send()">上传</button>
+    <div>
+        <input type="file" class="file" accept="image/*" name="avatar">
+        <img></img>
+        <button onclick="send()">上传</button>
+    </div>
+    <div>
+        <input type="file" class="file-execl" accept=".xlsx, .xls" name="execl">
+        <button onclick="sendExecl()">上传execl</button>
+    </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        let formData = new FormData()
-        document.querySelector('.file').addEventListener('change', function (e) {
-            let files = e.target.files
-            console.log(files)
-            if (!files.length) return
-            formData.append('file', files[0], files[0].name)
-        })
+        // let formData = new FormData()
+        const formDataMap = new Map([]);
+        let dom = [
+            {
+                tag: document.querySelector('.file'),
+                name: 'file',
+            },
+            {
+                tag: document.querySelector('.file-execl'),
+                name: 'file-execl',
+            },
+        ];
+        
+        dom.forEach((item) => {
+            item.tag.addEventListener('change', function (e) {
+                let files = e.target.files;
+                console.log(item.name, files);
+                if (!files.length) return;
+                const formData = new FormData();
+                formData.append('file', files[0], files[0].name);
+                formDataMap.set(item.name, formData);
+            });
+        });
+        
         function send() {
-            axios.post('/upload', formData, {
+            axios.post('/upload', this.formDataMap.get('file'), {
                 Headers: {
                     "Content-type": "multipart/form-data",
                 }
@@ -30,6 +53,20 @@
                 console.log(res.data.data);
                 const img = document.querySelector('img');
                 img.src=res.data.data;
+            });
+        }
+
+        function sendExecl() {
+            const execl = formDataMap.get('file-execl');
+            console.log(execl);
+            axios.post('/upload/execl', execl, {
+                Headers: {
+                    "Content-type": "multipart/form-data",
+                }
+            }).then(res => {
+                console.log(res.data.data);
+                // const img = document.querySelector('img');
+                // img.src=res.data.data;
             });
         }
     </script>

@@ -1,0 +1,9 @@
+{
+    "watch": ["./app.js", "./"],
+    "ignore": [],
+    "script": "./app.js",
+    "options": {
+        "extensions": ["js", "coffee"],
+        "exec": "node"
+    }
+}
