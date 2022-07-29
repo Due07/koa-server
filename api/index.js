@@ -43,7 +43,7 @@ router
 // /^\/upload\/+[A-Za-z0-9\/]+([A-Za-z0-9]{2,64})+(.png|.jpeg|.jpg)$/i
 // 👆 以/upload/开头 + 中间可以多层路径(或者没有) + (2-64位)((.png)|(.jpeg)|(.jpg))结尾的的路由
 // 匹配 /upload/{2-64位名称}(.png/.jpeg/.jpg)
-.get(/^\/upload+\/+([A-Za-z0-9]{2,64})((.png)|(.jpeg)|(.jpg)|(.xlsx)|(.xls))$/i, useStatic)
+.get(/^\/upload+\/+([A-Za-z0-9]{2,64})((.png)|(.jpeg)|(.jpg)|(.xlsx)|(.xls)|(.html))$/i, useStatic)
 .post(
     '/upload',
     async (ctx, next) => {
@@ -73,10 +73,11 @@ router
         }
     }
 )
+// execl接口
 .post(
     '/upload/execl',
     async (ctx) => {
-        console.log(ctx, ctx.request.files);
+        // console.log(ctx, ctx.request.files);
         if (!ctx.request.files) {
             return ctx.body = {
                 code: 400,
@@ -85,7 +86,10 @@ router
             };
         };
         const body  = await analysisExecl(ctx.request.files.file);
-        ctx.body = body;
+        ctx.body = {
+            ...body,
+            url: `http://${ctx.header.host}/${body.url}`
+        };
     },
 )
 .all('/api/users/:id', (ctx, next) => {
